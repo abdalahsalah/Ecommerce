@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProStore Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --dark-bg: #0A0A0A;
+            --content-bg: #111111;
+            --card-bg: #181818;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #888888;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--content-bg);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--dark-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #ffffff !important;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+            .sidebar-brand .fa-shield-halved {
+                color: var(--primary-color);
+                margin-right: 0.75rem;
+            }
+
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+            .nav-link .nav-icon {
+                width: 20px;
+                margin-right: 1rem;
+                text-align: center;
+            }
+
+            .nav-link:hover {
+                background-color: var(--content-bg);
+                color: var(--primary-color);
+            }
+
+            .nav-link.active {
+                background-color: var(--primary-color);
+                color: var(--dark-bg);
+                font-weight: 600;
+            }
+
+                .nav-link.active .nav-icon {
+                    color: var(--dark-bg);
+                }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+            .sidebar-footer .nav-link {
+                justify-content: space-between;
+            }
+
+                .sidebar-footer .nav-link:hover {
+                    background-color: transparent;
+                    color: var(--primary-color);
+                }
+
+        .main-content {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 2rem;
+        }
+
+        .page-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+                font-weight: 700;
+            }
+
+        @@media (max-width: 768px) {
+            .sidebar {
+                margin-left: -260px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar.toggled {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <nav id="sidebarMenu" class="sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <a class="sidebar-brand" asp-controller="Dashboard" asp-action="Index">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>ProStore</span>
+                    </a>
+                </div>
+                <ul class="nav flex-column sidebar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Dashboard" asp-action="Index">
+                            <i class="fa-solid fa-chart-line nav-icon"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Product" asp-action="Index">
+                            <i class="fa-solid fa-box-archive nav-icon"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Category" asp-action="Index">
+                            <i class="fa-solid fa-tags nav-icon"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Brand" asp-action="Index">
+                            <i class="fa-solid fa-copyright nav-icon"></i> Brands
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Order" asp-action="Index">
+                            <i class="fa-solid fa-receipt nav-icon"></i> Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="AdminUser" asp-action="Index">
+                            <i class="fa-solid fa-users-cog nav-icon"></i> Users
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a class="nav-link" asp-controller="Home" asp-action="Index" target="_blank">
+                    <span><i class="fa-solid fa-arrow-up-right-from-square nav-icon"></i> View Site</span>
+                </a>
+                <a class="nav-link" asp-controller="User" asp-action="Logout">
+                    <span><i class="fa-solid fa-right-from-bracket nav-icon"></i> Sign Out</span>
+                </a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentUrl = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href).pathname;
+                if (currentUrl.startsWith(linkPath) && linkPath !== '/') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            if (currentUrl === '/Dashboard' || currentUrl === '/Dashboard/Index') {
+                 document.querySelector('.sidebar-nav .nav-link[asp-controller="Dashboard"]').classList.add('active');
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

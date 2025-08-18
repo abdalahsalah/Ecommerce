@@ -1,0 +1,233 @@
+﻿@model Ecommerce_MVC_project.Models.DashboardViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .stat-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        background-color: var(--content-bg);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-card .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
+
+    .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        height: 400px; /* Set a fixed height for chart containers */
+    }
+
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-border-color: var(--border-color);
+        --bs-table-color: var(--text-color);
+        --bs-table-hover-color: var(--text-color);
+        --bs-table-hover-bg: var(--content-bg);
+    }
+
+        .table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+</style>
+
+<div class="page-header">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<!-- Stat Cards -->
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalUsers</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalProducts</div>
+                <div class="stat-label">Total Products</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalOrders</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalRevenue.ToString("C0")</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row">
+    <div class="col-xl-7 mb-4">
+        <div class="card">
+            <div class="card-header">Monthly Sales</div>
+            <div class="card-body">
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-5 mb-4">
+        <div class="card">
+            <div class="card-header">Products by Category</div>
+            <div class="card-body">
+                <canvas id="productsPerCategoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart.js Global Defaults
+            Chart.defaults.color = 'rgba(234, 234, 234, 0.7)';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+            // Monthly Sales Chart (Line)
+            const ctxSales = document.getElementById('monthlySalesChart').getContext('2d');
+            const salesGradient = ctxSales.createLinearGradient(0, 0, 0, 400);
+            salesGradient.addColorStop(0, 'rgba(54, 162, 235, 0.5)');
+            salesGradient.addColorStop(1, 'rgba(54, 162, 235, 0)');
+
+            new Chart(ctxSales, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.MonthlySalesLabels)),
+                    datasets: [{
+                        label: 'Sales (EGP)',
+                        data: @Html.Raw(Json.Serialize(Model.MonthlySalesData)),
+                        backgroundColor: salesGradient,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                        pointBorderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // Products per Category Chart (Doughnut)
+            const ctxProducts = document.getElementById('productsPerCategoryChart').getContext('2d');
+            new Chart(ctxProducts, {
+                type: 'doughnut',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.ProductsPerCategoryLabels)),
+                    datasets: [{
+                        label: '# of Products',
+                        data: @Html.Raw(Json.Serialize(Model.ProductsPerCategoryData)),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ],
+                        borderColor: 'var(--card-bg)',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

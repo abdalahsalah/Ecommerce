@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Ecommerce_MVC_project.Models.User>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Users Management";
+}
+
+<style>
+    .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
+
+    .card-body {
+        padding: 0;
+    }
+
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-border-color: var(--border-color);
+        --bs-table-color: var(--text-color);
+        --bs-table-hover-color: var(--text-color);
+        --bs-table-hover-bg: var(--content-bg);
+        margin-bottom: 0;
+    }
+
+        .table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border-top: none;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+
+        .table tbody tr:first-child td {
+            border-top: none;
+        }
+
+    .badge.bg-success {
+        background-color: #166534 !important;
+    }
+
+    .badge.bg-secondary {
+        background-color: #4b5563 !important;
+    }
+</style>
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Registered On</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge @(user.Role == "Admin" ? "bg-success" : "bg-secondary")">
+                                    @user.Role
+                                </span>
+                            </td>
+                            <td>@user.CreatedAt.ToString("d MMMM yyyy")</td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-outline-light">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        title: 'Success!',
+                        text: '@Html.Raw(TempData["SuccessMessage"])',
+                        icon: 'success',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)',
+                        confirmButtonColor: '#3085d6'
+                    });
+            </text>
+        }
+        });
+    </script>
+}

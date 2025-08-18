@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Ecommerce_MVC_project.Models.Order>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Customer Orders";
+}
+
+<style>
+    .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
+
+    .card-body {
+        padding: 0;
+    }
+
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-border-color: var(--border-color);
+        --bs-table-color: var(--text-color);
+        --bs-table-hover-color: var(--text-color);
+        --bs-table-hover-bg: var(--content-bg);
+        margin-bottom: 0;
+    }
+
+        .table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border-top: none;
+            padding: 1rem 1.5rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 1rem 1.5rem;
+        }
+
+        .table tbody tr:first-child td {
+            border-top: none;
+        }
+
+    .badge {
+        font-weight: 600;
+        padding: 0.4em 0.8em;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+    .status-Shipped {
+        background-color: #0e7490;
+    }
+
+    .status-Delivered {
+        background-color: #166534;
+    }
+
+    .status-Cancelled {
+        background-color: #991b1b;
+    }
+
+    .status-Pending, .status-Processing {
+        background-color: #b45309;
+    }
+</style>
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Order Date</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td><span class="text-secondary">#</span>@order.Id</td>
+                            <td>@(order.User?.Name ?? "N/A")</td>
+                            <td>@order.OrderDate.ToString("g")</td>
+                            <td>@order.TotalPrice.ToString("C")</td>
+                            <td>
+                                <span class="badge status-@order.OrderStatus">@order.OrderStatus</span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-light">View Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        title: 'Success!',
+                        text: '@Html.Raw(TempData["SuccessMessage"])',
+                        icon: 'success',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)'
+                    });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        title: 'Error!',
+                        text: '@Html.Raw(TempData["ErrorMessage"])',
+                        icon: 'error',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)'
+                    });
+            </text>
+        }
+        });
+    </script>
+}

@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">@ViewData["Title"]</h2>
+                <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <div class="form-floating mb-3">
+                        <input name="email" class="form-control" placeholder="name@example.com" autocomplete="username" aria-required="true" />
+                        <label for="email">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input name="password" type="password" class="form-control" placeholder="Password" autocomplete="current-password" aria-required="true" />
+                        <label for="password">Password</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+                    </div>
+                    <hr />
+                    <div class="text-center">
+                        <p>Don't have an account?</p>
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-outline-secondary">Register as a new user</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

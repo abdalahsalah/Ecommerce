@@ -1,0 +1,351 @@
+﻿@model IEnumerable<Ecommerce_MVC_project.Models.Product>
+@{
+    ViewData["Title"] = "Welcome to ProStore";
+}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --dark-bg: #0A0A0A;
+            --content-bg: #111111;
+            --card-bg: #181818;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #888888;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden; 
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .hero-slider {
+            height: 75vh;
+            position: relative;
+        }
+
+            .hero-slider .swiper-slide {
+                background-size: cover;
+                background-position: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                color: #fff;
+            }
+
+            .hero-slider .slide-content {
+                max-width: 700px;
+                background: rgba(0,0,0,0.5);
+                padding: 3rem;
+                border-radius: 12px;
+                backdrop-filter: blur(5px);
+            }
+
+                .hero-slider .slide-content h1 {
+                    font-weight: 800;
+                    font-size: 3.5rem;
+                }
+
+                .hero-slider .slide-content p {
+                    font-size: 1.2rem;
+                }
+
+            .hero-slider .btn-primary {
+                background-color: var(--primary-color);
+                color: var(--dark-bg);
+                border-color: var(--primary-color);
+                font-weight: 600;
+                padding: 0.8rem 2rem;
+            }
+
+            .hero-slider .swiper-button-next,
+            .hero-slider .swiper-button-prev {
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+        .promo-section {
+            padding: 4rem 0;
+        }
+
+        .promo-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .promo-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+        .promo-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .promo-item h5 {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .promo-item p {
+            color: var(--text-secondary);
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+            .product-card .card-img-top {
+                height: 250px;
+                object-fit: cover;
+            }
+
+            .product-card .card-body {
+                padding: 1.5rem;
+            }
+
+            .product-card .card-title a {
+                color: var(--text-color);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .product-card .card-category {
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+            }
+
+            .product-card .card-price {
+                font-weight: 700;
+                font-size: 1.25rem;
+                color: var(--primary-color);
+            }
+
+            .product-card .add-to-cart-btn {
+                background-color: var(--primary-color);
+                color: var(--dark-bg);
+                border: none;
+                font-weight: 600;
+            }
+
+        .product-slider-3d {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+            .product-slider-3d .swiper-slide {
+                width: 320px;
+                height: 480px;
+            }
+
+                .product-slider-3d .swiper-slide .product-card {
+                    height: 100%;
+                }
+
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--primary-color);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="swiper-container hero-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop')">
+                <div class="slide-content"><h1>High-Fidelity Sound</h1><p class="text-white-50 d-none d-md-block">Experience crystal clear audio with our latest headphones.</p><a href="#" class="btn btn-primary mt-2">Explore Audio</a></div>
+            </div>
+            <div class="swiper-slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop')">
+                <div class="slide-content"><h1>Timeless Precision</h1><p class="text-white-50 d-none d-md-block">Discover watches that blend classic design with modern technology.</p><a href="#" class="btn btn-primary mt-2">Discover Watches</a></div>
+            </div>
+            <div class="swiper-slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?q=80&w=2070&auto=format&fit=crop')">
+                <div class="slide-content"><h1>Capture Every Moment</h1><p class="text-white-50 d-none d-md-block">Professional-grade cameras for stunning photos and videos.</p><a href="#" class="btn btn-primary mt-2">Shop Cameras</a></div>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="promo-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3"><div class="promo-item"><div class="promo-icon"><i class="fa-solid fa-truck-fast"></i></div><h5>Fast Shipping</h5><p>Get your orders delivered in record time.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="promo-item"><div class="promo-icon"><i class="fa-solid fa-shield-halved"></i></div><h5>Secure Payments</h5><p>Your transactions are safe and encrypted.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="promo-item"><div class="promo-icon"><i class="fa-solid fa-headset"></i></div><h5>24/7 Support</h5><p>Our team is here to help you around the clock.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="promo-item"><div class="promo-icon"><i class="fa-solid fa-award"></i></div><h5>Quality Guarantee</h5><p>We stand by the quality of our products.</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="swiper-container product-slider-3d">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.OrderByDescending(p => p.CreatedAt).Take(8))
+                {
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                <img src="@product.ImagePath" class="card-img-top" alt="@product.Name">
+                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <p class="card-category">@product.Category.Name</p>
+                                <h5 class="card-title flex-grow-1">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="text-decoration-none">@product.Name</a>
+                                </h5>
+                                <p class="card-price">@product.Price.ToString("C")</p>
+                                <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-grid mt-2">
+                                    <input type="hidden" name="productId" value="@product.Id" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <h2 class="section-title mt-5" id="products">All Products</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <div class="card product-card h-100">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                            <img src="@product.ImagePath" class="card-img-top" alt="@product.Name">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-category">@product.Category.Name</p>
+                            <h5 class="card-title flex-grow-1">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="text-decoration-none">@product.Name</a>
+                            </h5>
+                            <p class="card-price">@product.Price.ToString("C")</p>
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-grid mt-2">
+                                <input type="hidden" name="productId" value="@product.Id" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <text>
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            },
+                            background: 'var(--card-bg)',
+                            color: 'var(--text-color)'
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: '@Html.Raw(TempData["SuccessMessage"])'
+                        });
+                </text>
+            }
+
+                const heroSwiper = new Swiper('.hero-slider', {
+                    effect: 'fade',
+                    loop: true,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+
+                const arrivalsSwiper = new Swiper('.product-slider-3d', {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    loop: true,
+                    coverflowEffect: {
+                        rotate: 0,
+                        stretch: 80,
+                        depth: 200,
+                        modifier: 1,
+                        slideShadows: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+            });
+        </script>
+    }
+</body>
+</html>

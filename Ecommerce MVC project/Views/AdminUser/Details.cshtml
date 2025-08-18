@@ -1,0 +1,214 @@
+﻿@model Ecommerce_MVC_project.Models.User
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "User Details";
+}
+
+<style>
+    .details-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 0.5rem 1rem;
+        align-items: center;
+    }
+
+        .details-grid dt {
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .details-grid dd {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+    .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
+
+    .card-header {
+        background-color: var(--content-bg);
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+    }
+
+    .form-control, .form-select {
+        background-color: var(--content-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+    }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--content-bg);
+            border-color: var(--primary-color);
+            color: var(--text-color);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+    .btn-warning {
+        background-color: #f59e0b;
+        border-color: #f59e0b;
+        color: #181818;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+    .badge.bg-success {
+        background-color: #166534 !important;
+    }
+
+    .badge.bg-secondary {
+        background-color: #4b5563 !important;
+    }
+</style>
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>@ViewData["Title"]: @Model.Name</h1>
+        <a asp-action="Index" class="btn btn-outline-light">
+            <i class="fa-solid fa-arrow-left me-2"></i>Back to Users List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card mb-4">
+            <div class="card-header">User Information</div>
+            <div class="card-body">
+                <dl class="details-grid">
+                    <dt>ID:</dt>
+                    <dd>@Model.Id</dd>
+
+                    <dt>Name:</dt>
+                    <dd>@Model.Name</dd>
+
+                    <dt>Email:</dt>
+                    <dd>@Model.Email</dd>
+
+                    <dt>Age:</dt>
+                    <dd>@Model.Age</dd>
+
+                    <dt>Phone:</dt>
+                    <dd>@(Model.PhoneNumber ?? "Not Provided")</dd>
+
+                    <dt>Address:</dt>
+                    <dd>@(Model.Address ?? "Not Provided")</dd>
+
+                    <dt>Registered On:</dt>
+                    <dd>@Model.CreatedAt.ToString("F")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card mb-4">
+            <div class="card-header">Change Role</div>
+            <div class="card-body">
+                <p><strong>Current Role:</strong> <span class="badge @(Model.Role == "Admin" ? "bg-success" : "bg-secondary")">@Model.Role</span></p>
+                <hr style="border-color: var(--border-color);" />
+                <form asp-action="UpdateRole" method="post">
+                    <input type="hidden" name="userId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="newRole" class="form-label">Select New Role:</label>
+                        <select name="newRole" class="form-select">
+                            <option value="Customer" selected="@(Model.Role == "Customer")">Customer</option>
+                            <option value="Admin" selected="@(Model.Role == "Admin")">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning mt-3 w-100">Update Role</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Actions</div>
+            <div class="card-body">
+                <p class="text-secondary">Permanently delete this user and all associated data from the system.</p>
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline delete-form">
+                    <button type="submit" class="btn btn-danger w-100 delete-btn">Delete User Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        User Orders (@Model.Orders.Count)
+    </div>
+    <div class="card-body">
+        @if (Model.Orders.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td><span class="text-secondary">#</span>@order.Id</td>
+                                <td>@order.OrderDate.ToString("d MMM yyyy")</td>
+                                <td>@order.TotalPrice.ToString("C")</td>
+                                <td><span class="badge" style="background-color: var(--info-bg); border: 1px solid var(--info-border);">@order.OrderStatus</span></td>
+                                <td class="text-end">
+                                    <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-light">View Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-secondary mb-0">This user has not placed any orders yet.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You are about to delete this user account permanently!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, delete it!',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

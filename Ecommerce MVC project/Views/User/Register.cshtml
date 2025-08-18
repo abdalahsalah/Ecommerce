@@ -1,0 +1,232 @@
+﻿@model Ecommerce_MVC_project.Models.User
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProStore</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --dark-bg: #0A0A0A;
+            --content-bg: #111111;
+            --card-bg: #181818;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #888888;
+            --danger-color: #f87171;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+        }
+
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .auth-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem 3rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-header .brand-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .auth-header h1 {
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .form-control {
+            background-color: var(--content-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .form-control:focus {
+                background-color: var(--content-bg);
+                border-color: var(--primary-color);
+                color: var(--text-color);
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            }
+
+        .input-group .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            z-index: 3;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            width: 100%;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #d9d9d9;
+                border-color: #d9d9d9;
+                transform: translateY(-2px);
+            }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+            .auth-footer a {
+                color: var(--text-secondary);
+                font-weight: 500;
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+
+                .auth-footer a:hover {
+                    color: var(--primary-color);
+                }
+
+        .field-validation-error {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            padding-left: 0.25rem;
+            padding-top: 0.25rem;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header text-center mb-4">
+                <i class="fa-solid fa-bolt-lightning brand-icon mb-2"></i>
+                <h1>Create an Account</h1>
+                <p class="text-secondary">Join ProStore to get started.</p>
+            </div>
+
+            <form asp-action="Register" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <div class="input-group">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input asp-for="Name" class="form-control" placeholder="John Doe" />
+                        </div>
+                        <span asp-validation-for="Name" class="field-validation-error"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Age" class="form-label"></label>
+                        <div class="input-group">
+                            <i class="fa-solid fa-cake-candles input-icon"></i>
+                            <input asp-for="Age" class="form-control" placeholder="25" />
+                        </div>
+                        <span asp-validation-for="Age" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                    </div>
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p class="text-secondary mb-0">Already have an account? <a asp-action="Login">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

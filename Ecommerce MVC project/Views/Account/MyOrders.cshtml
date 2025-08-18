@@ -1,0 +1,225 @@
+﻿@model IEnumerable<Ecommerce_MVC_project.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProStore</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --dark-bg: #0A0A0A;
+            --content-bg: #111111;
+            --card-bg: #181818;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #888888;
+            --info-bg: #1d2b3f;
+            --info-border: #385d8a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .account-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .account-header h1 {
+            font-weight: 700;
+        }
+
+        .account-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .account-nav {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            align-self: flex-start;
+        }
+
+            .account-nav .nav-link {
+                display: flex;
+                align-items: center;
+                padding: 0.8rem 1rem;
+                color: var(--text-secondary);
+                border-radius: 8px;
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+                transition: background-color 0.2s ease, color 0.2s ease;
+            }
+
+                .account-nav .nav-link .nav-icon {
+                    width: 20px;
+                    margin-right: 1rem;
+                    text-align: center;
+                }
+
+                .account-nav .nav-link:hover {
+                    background-color: var(--content-bg);
+                    color: var(--primary-color);
+                }
+
+                .account-nav .nav-link.active {
+                    background-color: var(--content-bg);
+                    color: var(--primary-color);
+                    font-weight: 600;
+                }
+
+        .account-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+        }
+
+            .account-content h3 {
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-border-color: var(--border-color);
+            --bs-table-color: var(--text-color);
+            --bs-table-hover-color: var(--text-color);
+            --bs-table-hover-bg: var(--content-bg);
+        }
+
+            .table th {
+                color: var(--text-secondary);
+                font-weight: 500;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                letter-spacing: 0.5px;
+            }
+
+            .table td {
+                vertical-align: middle;
+            }
+
+        .btn-outline-light {
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+            .btn-outline-light:hover {
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+                color: var(--dark-bg);
+            }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.4em 0.8em;
+            font-size: 0.8rem;
+        }
+
+        .alert-info {
+            background-color: var(--info-bg);
+            border-color: var(--info-border);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="account-wrapper">
+        <header class="account-header">
+            <h1>My Account</h1>
+            <p class="text-secondary">Manage your personal information, orders, and preferences.</p>
+        </header>
+
+        <div class="account-layout">
+            <nav class="account-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewData["Title"].ToString() == "My Account" ? "active" : "")" asp-controller="Account" asp-action="Index">
+                            <i class="fa-solid fa-user-edit nav-icon"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewData["Title"].ToString() == "My Orders" ? "active" : "")" asp-controller="Account" asp-action="MyOrders">
+                            <i class="fa-solid fa-box-archive nav-icon"></i> My Orders
+                        </a>
+                    </li>
+                 
+                </ul>
+            </nav>
+
+            <main class="account-content">
+                <h3>Order History</h3>
+
+                @if (Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model)
+                                {
+                                    <tr>
+                                        <td><span class="text-secondary">#</span>@order.Id</td>
+                                        <td>@order.OrderDate.ToString("d MMMM yyyy")</td>
+                                        <td>@order.TotalPrice.ToString("C")</td>
+                                        <td><span class="badge" style="background-color: var(--info-bg); border: 1px solid var(--info-border);">@order.OrderStatus</span></td>
+                                        <td class="text-end">
+                                            <a asp-action="OrderDetails" asp-route-id="@order.Id" class="btn btn-sm btn-outline-light">View Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        You have not placed any orders yet.
+                    </div>
+                }
+            </main>
+        </div>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

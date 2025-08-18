@@ -1,0 +1,267 @@
+﻿@model List<Ecommerce_MVC_project.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    decimal cartTotal = Model.Sum(item => item.Total);
+}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProStore</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --dark-bg: #0A0A0A;
+            --content-bg: #111111;
+            --card-bg: #181818;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #888888;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .cart-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .cart-header h1 {
+            font-weight: 700;
+        }
+
+        .cart-table {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+            .cart-table .table {
+                --bs-table-bg: transparent;
+                --bs-table-border-color: var(--border-color);
+                --bs-table-color: var(--text-color);
+                margin-bottom: 0;
+            }
+
+                .cart-table .table th {
+                    color: var(--text-secondary);
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    font-size: 0.8rem;
+                    letter-spacing: 0.5px;
+                    border: none;
+                    padding: 1rem 1.5rem;
+                }
+
+                .cart-table .table td {
+                    vertical-align: middle;
+                    padding: 1.5rem;
+                }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-name {
+            font-weight: 600;
+        }
+
+        .quantity-input {
+            background-color: var(--content-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            width: 70px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+            .remove-btn:hover {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                color: #fff;
+            }
+
+        .summary-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+            .summary-card h4 {
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+            }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .summary-total {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #d9d9d9;
+                border-color: #d9d9d9;
+                transform: translateY(-2px);
+            }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+            .empty-cart i {
+                font-size: 3rem;
+                color: var(--text-secondary);
+            }
+
+    </style>
+</head>
+<body>
+    <div class="cart-wrapper">
+        <header class="cart-header mb-4">
+            <h1>@ViewData["Title"]</h1>
+        </header>
+
+        @if (Model.Any())
+        {
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="cart-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Product</th>
+                                    <th>Quantity</th>
+                                    <th class="text-end">Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="width: 100px;">
+                                            <img src="@item.ImagePath" class="product-image" />
+                                        </td>
+                                        <td>
+                                            <span class="product-name">@item.ProductName</span>
+                                        </td>
+                                        <td>
+                                            <form asp-action="UpdateCart" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <input type="number"
+                                                       name="quantity"
+                                                       value="@item.Quantity"
+                                                       min="1"
+                                                       class="form-control quantity-input"
+                                                       onchange="this.form.submit()" />
+                                            </form>
+                                        </td>
+                                        <td class="text-end">@item.Total.ToString("C")</td>
+                                        <td class="text-center">
+                                            <a asp-action="RemoveFromCart"
+                                               asp-route-productId="@item.ProductId"
+                                               class="btn remove-btn"
+                                               title="Remove item">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <h4>Order Summary</h4>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>@cartTotal.ToString("C")</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <hr style="border-color: var(--border-color);" />
+                        <div class="summary-row summary-total">
+                            <span>Total</span>
+                            <span>@cartTotal.ToString("C")</span>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <a href="/Checkout/Index" class="btn btn-primary">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">
+                <i class="fa-solid fa-cart-shopping mb-3"></i>
+                <h2>Your cart is empty.</h2>
+                <p class="text-secondary">Looks like you haven't added anything to your cart yet.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Continue Shopping</a>
+            </div>
+        }
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

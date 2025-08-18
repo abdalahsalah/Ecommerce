@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProStore</title>
+	@* <link rel="icon" type="image/x-icon" href=" ~ /favicon.ico" /> *@
+	@* <img src="~/favicon-32x32.png" /> *@
+    <link rel="icon" type="image/x-icon" href=" ~/favicon-32x32.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+   
+    <style>
+        :root {
+            --primary-color: #FFFFFF; 
+            --dark-bg: #0A0A0A;
+            --card-bg: #141414;
+            --border-color: #2a2a2a;
+            --text-color: #EAEAEA;
+            --text-secondary: #737373;
+            --header-height: 75px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .navbar {
+            height: var(--header-height);
+            transition: background-color 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+            .navbar:not(.scrolled) {
+                background-color: rgba(10, 10, 10, 0.7);
+                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(12px);
+            }
+
+            .navbar.scrolled {
+                background-color: var(--dark-bg);
+            }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #ffffff !important;
+        }
+
+            .navbar-brand .fa-bolt-lightning {
+                color: var(--primary-color);
+            }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+            padding: 0.5rem 1rem !important;
+        }
+
+            .nav-link:hover {
+                color: var(--primary-color) !important;
+            }
+
+            .nav-link.active {
+                color: var(--primary-color) !important;
+                font-weight: 600;
+            }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.65rem 1.4rem;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+            .btn.btn-primary {
+                background-color: var(--primary-color);
+                color: var(--dark-bg);
+                border-color: var(--primary-color);
+            }
+
+                .btn.btn-primary:hover {
+                    background-color: #d9d9d9;
+                    border-color: #d9d9d9;
+                }
+
+            .btn.btn-outline-light {
+                border-color: var(--border-color);
+                color: var(--text-color);
+            }
+
+                .btn.btn-outline-light:hover {
+                    background-color: var(--card-bg);
+                    border-color: var(--text-color);
+                    color: var(--text-color);
+                }
+
+        .dropdown-menu {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin-top: 1rem !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .dropdown-item {
+            color: var(--text-color);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+            .dropdown-item:hover, .dropdown-item:focus {
+                background-color: #2a2a2a;
+                color: var(--primary-color);
+            }
+
+            .dropdown-item.dropdown-item-danger:hover, .dropdown-item.dropdown-item-danger:focus {
+                background-color: #991b1b;
+                color: #fef2f2;
+            }
+
+        .dropdown-divider {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .main-content {
+            min-height: calc(100vh - 350px); 
+        }
+
+        .footer {
+            background-color: var(--dark-bg);
+            padding-top: 5rem;
+            padding-bottom: 2rem;
+            margin-top: 6rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-col .footer-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .footer-col .footer-brand .fa-bolt-lightning {
+                color: var(--primary-color);
+            }
+
+        .footer-heading {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s ease;
+        }
+
+            .footer-link:hover {
+                color: var(--primary-color);
+            }
+
+        .footer .social-icon {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+            .footer .social-icon:hover {
+                color: var(--primary-color);
+                transform: translateY(-2px);
+            }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav id="mainNavbar" class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-bolt-lightning me-2"></i>ProStore
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                      
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item me-2">
+                            @await Component.InvokeAsync("CartIcon")
+                        </li>
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-lg me-2"></i> Hi, @User.Identity.Name!
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Index"><i class="fas fa-user-cog me-2 fa-fw"></i>My Account</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="MyOrders"><i class="fas fa-box-open me-2 fa-fw"></i>My Orders</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-tachometer-alt me-2 fa-fw"></i>Admin Panel</a></li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form asp-controller="User" asp-action="Logout" method="post" class="d-inline w-100">
+                                            <button type="submit" class="dropdown-item dropdown-item-danger"><i class="fas fa-sign-out-alt me-2 fa-fw"></i>Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-outline-light me-2" asp-controller="User" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" asp-controller="User" asp-action="Register">Sign Up</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <main role="main" class="container py-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer" data-aos="fade-up" data-aos-offset="100">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a class="footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fa-solid fa-bolt-lightning me-2"></i>ProStore
+                    </a>
+                    <p class="text-secondary mt-3">The future of online retail. High-quality products for professionals.</p>
+                </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading">Explore</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a asp-controller="Home" asp-action="Index" class="footer-link">Home</a></li>
+                        <li><a asp-controller="Products" asp-action="Index" class="footer-link">Products</a></li>
+                        <li><a asp-controller="Home" asp-action="About" class="footer-link">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading">Support</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#" class="footer-link">FAQs</a></li>
+                        <li><a href="#" class="footer-link">Shipping & Returns</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading">Connect</h6>
+                    <div class="d-flex">
+                        <a href="#" class="social-icon me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="text-secondary mb-0">&copy; @DateTime.Now.Year Alfred Ramzy (Alfredo). All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/201279267864" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        AOS.init({
+            duration: 600,
+            once: true,
+            offset: 50,
+        });
+
+        const navbar = document.getElementById('mainNavbar');
+        if (navbar) {
+            window.onscroll = () => {
+                if (window.scrollY > 20) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            },
+                            background: 'var(--card-bg)',
+                            color: 'var(--text-color)',
+                            customClass: {
+                                popup: 'border border-secondary'
+                            }
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: '@Html.Raw(TempData["SuccessMessage"])'
+                        });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            },
+                            background: 'var(--card-bg)',
+                            color: 'var(--text-color)',
+                            customClass: {
+                                popup: 'border border-secondary'
+                            }
+                        });
+                        Toast.fire({
+                            icon: 'error',
+                            title: '@Html.Raw(TempData["ErrorMessage"])'
+                        });
+            </text>
+        }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

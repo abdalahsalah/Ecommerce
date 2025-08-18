@@ -1,0 +1,196 @@
+﻿@model Ecommerce_MVC_project.Models.Order
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Order Details #" + Model.Id;
+}
+
+<style>
+    .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
+
+    .card-header {
+        background-color: var(--content-bg);
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 0.5rem 1rem;
+        align-items: center;
+    }
+
+        .details-grid dt {
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .details-grid dd {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+    .form-select {
+        background-color: var(--content-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+    }
+
+        .form-select:focus {
+            background-color: var(--content-bg);
+            border-color: var(--primary-color);
+            color: var(--text-color);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-border-color: var(--border-color);
+        --bs-table-color: var(--text-color);
+    }
+
+        .table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+    .product-image-sm {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-outline-light">
+            <i class="fa-solid fa-arrow-left me-2"></i>Back to Orders List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card mb-4">
+            <div class="card-header">Customer & Order Summary</div>
+            <div class="card-body">
+                <dl class="details-grid">
+                    <dt>Customer Name:</dt>
+                    <dd>@Model.User.Name</dd>
+                    <dt>Email:</dt>
+                    <dd>@Model.User.Email</dd>
+                    <dt>Phone:</dt>
+                    <dd>@Model.User.PhoneNumber</dd>
+                    <dt>Shipping Address:</dt>
+                    <dd>@Model.User.Address</dd>
+                    <hr class="col-span-2 my-2" style="grid-column: span 2; border-color: var(--border-color);" />
+                    <dt>Order Date:</dt>
+                    <dd>@Model.OrderDate.ToString("F")</dd>
+                    <dt>Total Price:</dt>
+                    <dd class="fw-bold">@Model.TotalPrice.ToString("C")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mb-4">
+            <div class="card-header">Update Order Status</div>
+            <div class="card-body">
+                <p><strong>Current Status:</strong> <span class="fw-bold">@Model.OrderStatus</span></p>
+                <form asp-action="UpdateStatus" method="post">
+                    <input type="hidden" name="orderId" value="@Model.Id" />
+                    <div class="input-group">
+                        <select name="status" class="form-select">
+                            <option value="Pending" selected="@(Model.OrderStatus == "Pending")">Pending</option>
+                            <option value="Processing" selected="@(Model.OrderStatus == "Processing")">Processing</option>
+                            <option value="Shipped" selected="@(Model.OrderStatus == "Shipped")">Shipped</option>
+                            <option value="Delivered" selected="@(Model.OrderStatus == "Delivered")">Delivered</option>
+                            <option value="Cancelled" selected="@(Model.OrderStatus == "Cancelled")">Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">Items in this Order</div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@item.Product.ImagePath" class="product-image-sm" />
+                            </td>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-end">@((item.Quantity * item.Price).ToString("C"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        title: 'Success!',
+                        text: '@Html.Raw(TempData["SuccessMessage"])',
+                        icon: 'success',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)'
+                    });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        title: 'Error!',
+                        text: '@Html.Raw(TempData["ErrorMessage"])',
+                        icon: 'error',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-color)'
+                    });
+            </text>
+        }
+        });
+    </script>
+}
